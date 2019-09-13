@@ -1,0 +1,18 @@
+---
+- name: Check if user is present if not create a new user and set a password
+  hosts: all
+  tasks:
+   - name: Check for user
+     user:
+      name: Cherry
+     register: results
+   - name: Display the output og user module
+     debug:
+      var: results
+   - name: Set password if user is newly created
+     user:
+      name: Cherry
+      password: xyz
+     when:
+      results.changed == true
+...

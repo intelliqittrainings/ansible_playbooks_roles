@@ -1,0 +1,21 @@
+---
+- name: Tagging of modules
+  hosts: all
+  tasks:
+   - name: User Creation
+     user:
+      name: Patel
+      password: intelliq
+     tags:
+      user_creation
+   - name: Install java
+     apt:
+      name: openjdk-8-jdk
+      state: present
+     tags:
+      java_installation
+   - name: File creation
+     file:
+      name: /tmp/file1
+      state: touch
+...

@@ -1,0 +1,14 @@
+---
+- name: Install s/w
+  hosts: all
+  vars:
+   - a: tomcat8
+   - b: present
+   - c: no
+  tasks:
+   - name: Install tomcat8
+     apt:
+      name: "{{a}}"
+      state: "{{b}}"
+      update_cache: "{{c}}"
+...

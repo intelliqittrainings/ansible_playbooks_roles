@@ -1,0 +1,14 @@
+---
+- name: Installing/unistalling/updating s/w packages
+  hosts: all
+  tasks:
+   - name:  s/w package management
+     apt:
+      name: "{{item.a}}"
+      state: "{{item.b}}"
+      update_cache: "{{item.c}}"
+     with_items:
+      - {a: tree,b: present,c: no}
+      - {a: git,b: absent,c: no}
+      - {a: apache2,b: latest,c: yes}
+...

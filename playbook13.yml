@@ -1,0 +1,21 @@
+---
+- name: Installing apache
+  hosts: all
+  tasks:
+   - block: 
+      - name: Install apache1
+        apt:
+         name: apache1
+         state: present
+     rescue:
+      - name: Install apache2
+        apt:
+         name: apache2
+         state: present
+     always:
+      - name: Restart apache2
+        service:
+         name: apache2
+         state: restarted
+...
+

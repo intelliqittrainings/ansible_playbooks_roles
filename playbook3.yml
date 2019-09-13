@@ -1,0 +1,28 @@
+---
+- name: Configuring apache2
+  hosts: all
+  tasks:
+   - name: Install apache2
+     apt:
+      name: apache2
+      state: present
+   - name: Edit index.html file
+     copy:
+      content: "New Website for IntelliQ\n"
+      dest: /var/www/html/index.html
+   - name: Restart apache2
+     service:
+      name: apache2
+      state: restarted
+   - name: Check url response of Server1
+     uri:
+      url: http://172.31.30.147
+      status: 200
+   - name: Check url response of Server2
+     uri:
+      url: http://172.31.21.157
+      status: 200
+   - name: Check url response of server3
+     uri:
+      url: http://172.31.30.195
+      status: 200

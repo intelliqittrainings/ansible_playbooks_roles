@@ -1,0 +1,27 @@
+---
+- name: Implementing handlers
+  hosts: all
+  tasks:
+   - name: Install apache2
+     apt:
+      name: apache2
+      state: present
+     notify: Check url response
+   - name: Edit index.html file
+     copy:
+      content: "Welcome to IntelliQ\n"
+      dest: /var/www/html/index.html
+     notify: Restart apache2
+  handlers:
+   - name: Restart apache2
+     service:
+      name: apache2
+      state: restarted
+   - name: Check url response
+     uri:
+      url: "{{item}}"
+      status: 200
+     with_items:
+      - http://172.31.30.147
+      - http://172.31.21.157
+      - http://172.31.30.195

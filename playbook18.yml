@@ -1,0 +1,10 @@
+---
+- name: Calling child playbooks and error handling
+  hosts: all
+  tasks:
+   - block:
+      - name: Call child playbook
+        include: playbook20.yml
+     rescue:
+      - name: Call another child playbook
+        include: install_apache2.yml

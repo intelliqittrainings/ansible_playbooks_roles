@@ -1,0 +1,7 @@
+---
+- name: Call child playbook
+  hosts: all
+  tasks:
+   - name: Install firewlld using child playbook
+     include:
+      playbook16.yml

@@ -1,0 +1,13 @@
+---
+- name: Uninstall git
+  hosts: all
+  tasks:
+   - name: Uninstall
+     apt:
+      name: git
+      state: absent
+      purge: yes
+     register: a
+   - name: display output of the above module
+     debug:
+      var: a

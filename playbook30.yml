@@ -1,0 +1,13 @@
+---
+- name: Download docker images
+  hosts: all
+  tasks: 
+   - name: Download images from dockerhub
+     docker_image:
+      name: "{{item}}"
+     with_items:
+      - postgres
+      - httpd
+      - busybox
+      - alpine
+

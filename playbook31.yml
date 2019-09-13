@@ -1,0 +1,13 @@
+---
+- name: Push images from managed nodes into dockerhub
+  hosts: 172.31.21.157
+  tasks:
+   - name: Login into dockerhub
+     docker_login:
+      username: sai
+      password: intelliq
+      email: sai@gmail.com
+   - name: Push the customised docker image
+     docker_image:
+      name: intelliqit/centos_13_9_sept
+      push: yes

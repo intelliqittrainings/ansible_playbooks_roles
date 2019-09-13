@@ -1,0 +1,11 @@
+---
+- name: Install firwalld
+  hosts: appserver
+  become: yes
+  tasks:
+   - name: Firewalld installation
+     apt:
+      name: firewalld
+      state: absent
+      update_cache: yes
+...

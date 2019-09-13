@@ -1,0 +1,10 @@
+---
+- name: Installing s/w using host variables
+  hosts: 172.31.30.147
+  tasks:
+   - name: Install s/w
+     apt:
+      name: "{{a}}"
+      state: "{{b}}"
+      update_cache: "{{c}}"
+...

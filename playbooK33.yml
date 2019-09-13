@@ -1,0 +1,29 @@
+---
+- name: Create ci-cd setup on aws instances
+  hosts: 172.31.30.147
+  tasks:
+   - name: ADD the jenkins related keys
+     shell: "{{item}}"
+     with_items:
+      - wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+      - echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list
+   - name: Update the apt repo and install jenkins
+     apt:
+      name: jenkins
+      state: present
+      update_cache: yes
+- name: Install tomcat on QA and ProdServer
+  hosts: servers
+  tasks:
+   - name: Install tomcat8
+     apt:
+      name: tomcat8
+      state: present
+      update_cache: yes
+   - name: Copy tomcat-users.xml file
+     copy:
+      src: /home/ubuntu/tomcat-users.xml
+      dest: /etc/tomcat8
+
+
+

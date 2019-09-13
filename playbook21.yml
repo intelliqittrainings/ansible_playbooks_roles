@@ -1,0 +1,16 @@
+---
+- name: 
+  hosts: all
+  tasks:
+   - name: Create a directory
+     file:
+      name: /home/ubuntu/newdir1
+      state: directory
+   - name: Capture info about dir
+     stat:
+      path: /home/ubuntu/newdir1
+     register: results
+   - name: display output of the above stat module
+     debug:
+      var: results
+

@@ -1,0 +1,12 @@
+---
+- name: Start ubuntu and attach a volume
+  hosts: all
+  tasks:
+   - name: Start ubuntu
+     docker_container:
+      image: ubuntu
+      name: myubuntu
+      volumes:
+       - /data
+      interactive: yes
+      tty: yes

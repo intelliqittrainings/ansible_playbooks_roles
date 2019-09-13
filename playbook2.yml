@@ -1,0 +1,14 @@
+---
+- name: Creating users and copying files
+  hosts: all
+  tasks:
+   - name: Create a user
+     user:
+      name: Harish
+      password: intelliq
+      home: /home/Harish
+   - name: Copying the passwd
+     copy:
+      src: /etc/passwd
+      dest: /home/Harish
+...

@@ -1,0 +1,7 @@
+---
+- name: Install firewall
+  apt:
+   name: firewalld
+   state: present
+   update_cache: yes
+...
