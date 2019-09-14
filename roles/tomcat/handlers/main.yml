@@ -1,0 +1,10 @@
+---
+# handlers file for tomcat
+- name: Check url response
+  uri:
+   url: "{{item.a}}"
+   status: "{{item.b}}"
+  with_items:
+   - {a: "{{server1}}",b: "{{status1}}"}
+   - {a: "{{server2}}",b: "{{status1}}"}
+   - {a: "{{server3}}",b: "{{status1}}"}

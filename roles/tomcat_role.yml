@@ -1,0 +1,5 @@
+---
+- name: Configuring tomcat uisng roles
+  hosts: all
+  roles:
+   - tomcat
