@@ -1,0 +1,181 @@
+Creating roles for tomcat
+
+---------------------------
+
+1 cd /etc/ansible/roles
+
+2 ansible-galaxy init tomcat --offline
+
+3 Create tasks for tomcat
+
+  a) cd tomcat/tasks
+
+  b) sudo vim main.yml
+
+  ---
+
+  - name: Calling child playbooks
+
+    include: "{{item}}"
+
+    with_items: 
+
+     - install.yml
+
+     - configure.yml
+
+     - restart.yml
+
+  ...
+
+  Save and quit
+
+ c) sudo vim install.yml
+
+---
+
+- name: Installing tomcat8 and tomcat8-admin
+
+  apt:
+
+   name: "{{item.a}}"
+
+   state: "{{item.b}}"
+
+   update_cache: "{{item.c}}"
+
+  with_items:
+
+   - {a: "{{pkg1}}",b: "{{state1}}",c: "{{cache1}}"}
+
+   - {a: "{{pkg2}}",b: "{{state1}}",c: "{{cache2}}"}
+
+...
+
+
+
+d) sudo vim configure.yml
+
+---
+
+- name: Copy tomcat-user.xml 
+
+  copy:
+
+   src: "{{file1}}"
+
+   dest: "{{destination1}}"
+
+- name: Change port of tomcat from 8080 to 9090
+
+  replace:
+
+   path: "{{path1}}"
+
+   regexp: "{{port1}}"
+
+   replace: "{{port2}}"
+
+  notify:
+
+   - check_url_response
+
+...
+
+
+
+e) sudo vim restart.yml
+
+---
+
+- name: Restart tomcat8
+
+  service:
+
+   name: "{{pkg1}}"
+
+   state: "{{state3}}"
+
+...
+
+4) Create the handlers
+
+   cd ..
+   cd handlers
+
+   sudo vim main.yml
+
+---
+
+# handlers file for tomcat
+
+- name: check_url_response
+
+  uri:
+
+   url: "{{item.a}}"
+
+   status: "{{item.b}}"
+
+  with_items:
+
+   - {a: "{{server1}}",b: "{{status1}}"}
+
+   - {a: "{{server2}}",b: "{{status1}}"}
+
+...
+
+
+5) create static files
+
+   cd ..
+   cd files
+
+  a)   sudo vim tomcat-users.xml
+   <tomcat-users>
+    <user username="intelliq" password="myintelliq" roles="manager-                                                                         script"/>
+  </tomcat-users>
+
+  Save and quit
+
+ 
+6) Define the variables
+   cd ..
+   cd vars
+   sudo vim main.yml
+---
+# vars file for tomcat
+pkg1: tomcat8
+pkg2: tomcat8-admin
+state1: present
+state2: absent
+state3: restarted
+cache1: yes
+cache2: no
+file1: tomcat-users.xml
+destination1: /etc/tomcat8
+server1: http://172.31.87.8:9090
+server2: http://172.31.84.59:9090
+status1: 200
+status2: -1
+path1: /etc/tomcat7/server.xml
+port1: 8080
+port2: 9090
+...
+
+7 Come out of the tomcat roles
+  cd ../..
+
+8 Create a playbook to call that role
+  sudo vim configure_tomcat.yml
+---
+- name: Configuring tomcat using roles
+  hosts: all
+  roles:
+   - tomcat
+...
+
+9 To run the playbook for the above role
+  ansible-playbook configure_tomcat.yml -b
+
+

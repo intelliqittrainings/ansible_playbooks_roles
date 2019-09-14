@@ -1,0 +1,107 @@
+
+1 Go into the /etc/ansible/roles folder
+  cd /etc/ansible/roles
+
+2 Create a new role for apache2
+  ansible-galaxy init apache2 --offline
+
+3 check the tree structure of the role that we created
+  tree apache2
+
+4 Go to tasks folder in role and create the task for configuring apache2
+  cd apache2/tasks
+vim main.yml
+---
+- include: install.yml
+- include: configure.yml
+- include: check_url_response.yml
+...
+
+Save and quit    Esc :wq Enter
+
+vim install.yml
+---
+- name: install apache2
+  apt:
+   name: apache2
+   state: latest
+
+Save and quit Esc :wq Enter
+
+vim configure.yml
+---
+- name:copy index.html
+  copy:
+   src: index.html
+   dest: /var/www/html/index.html
+  notify:
+   Restart apache2 
+...
+ 
+Save and quit Esc :wq Enter
+
+vim check_url_response.yml
+---
+- name: Check url response
+  uri:
+   url: "{{item}}"
+   status: 200
+  with_items:
+   - http://172.31.18.210
+   - http://172.31.31.227
+...
+
+Save and quit Esc :wq Enter
+
+Go to files folder to create the index.html file
+cd ..
+cd files
+sudo vim index.html
+<html>
+  <body>
+     <h1>This is IntelliQ</h1>
+  </body>
+</html>
+
+Save and quit Esc :wq Enter
+
+Go to handlers folder
+cd ..
+cd handlers
+
+sudo vim main.yml
+---
+# handlers file for apache2
+- name: Restart apache2
+  service:
+   name: apache2
+   state: restarted
+...
+
+Save and quit Esc :wq Enter
+
+CREATE the parent playbook to call the roles
+cd ..
+cd ..
+sudo vim apache_role.yml
+---
+- name: Implementing roles for apache2
+  hosts: all
+  roles:
+   - apache2
+...
+
+Save and quit Esc :wq Enter
+
+To execute the role
+ansible-playbook apache_role.yml -b
+
+
+
+
+
+
+
+
+
+
